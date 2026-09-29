@@ -1,0 +1,133 @@
+.jb-split {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.jb-tile-leaf {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--jb-bg-panel);
+}
+
+.jb-tile-leaf-hdr {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  height: var(--jb-panel-hdr-h);
+  min-height: var(--jb-panel-hdr-h);
+  padding: 0 8px;
+  background: var(--jb-bg-panel-2);
+  border-bottom: var(--jb-border-w) solid var(--jb-border);
+  flex-shrink: 0;
+}
+
+.jb-tile-leaf-bar {
+  width: 3px;
+  height: 12px;
+  background: var(--jb-border-strong);
+  border-radius: 1px;
+  flex-shrink: 0;
+}
+
+.jb-tile-panel-select {
+  background: transparent;
+  border: none;
+  color: var(--jb-text-secondary);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  padding: 0 2px;
+  flex: 1;
+  font-family: var(--jb-font-ui);
+}
+
+.jb-tile-panel-select:focus {
+  outline: none;
+  color: var(--jb-text-primary);
+}
+
+.jb-tile-leaf-actions {
+  display: flex;
+  gap: 2px;
+  margin-left: auto;
+}
+
+.jb-tile-leaf-actions button {
+  width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  color: var(--jb-text-dim);
+  border-radius: var(--jb-radius);
+  transition: background 0.1s, color 0.1s;
+}
+
+.jb-tile-leaf-actions button:hover {
+  background: var(--jb-bg-hover);
+  color: var(--jb-text-secondary);
+}
+
+.jb-tile-content {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}
+
+/* ── Divider ── */
+.jb-divider {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--jb-border);
+  transition: background 0.15s;
+  z-index: 10;
+}
+
+.jb-divider--h {
+  width: var(--jb-divider-w);
+  height: 100%;
+  cursor: col-resize;
+  flex-direction: column;
+}
+
+.jb-divider--v {
+  height: var(--jb-divider-w);
+  width: 100%;
+  cursor: row-resize;
+  flex-direction: row;
+}
+
+.jb-divider:hover,
+.jb-divider:active {
+  background: var(--jb-accent);
+}
+
+.jb-divider-grip {
+  display: flex;
+  gap: 2px;
+  pointer-events: none;
+}
+
+.jb-divider--h .jb-divider-grip { flex-direction: column; }
+.jb-divider--v .jb-divider-grip { flex-direction: row; }
+
+.jb-divider-grip span {
+  display: block;
+  width: 2px;
+  height: 2px;
+  border-radius: 50%;
+  background: var(--jb-text-dim);
+}
+
+.jb-divider:hover .jb-divider-grip span {
+  background: rgba(255,255,255,0.5);
+}

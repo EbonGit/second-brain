@@ -1,0 +1,124 @@
+/* Jad's Brain — Design System */
+/* Adapted from hmcls-app dark engineering theme */
+
+:root {
+  color-scheme: dark;
+
+  /* ── Fonts ── */
+  --jb-font-ui:   "Segoe UI", system-ui, -apple-system, "Helvetica Neue", Arial, sans-serif;
+  --jb-font-mono: "JetBrains Mono", "Cascadia Mono", Consolas, ui-monospace, monospace;
+
+  /* ── Backgrounds ── */
+  --jb-bg-canvas:   #0b0b10;
+  --jb-bg-app:      #0f0f15;
+  --jb-bg-panel:    #14141c;
+  --jb-bg-panel-2:  #191923;
+  --jb-bg-inset:    #0a0a0f;
+  --jb-bg-hover:    #1f1f2b;
+  --jb-bg-active:   #272735;
+
+  /* ── Borders ── */
+  --jb-border:        #26262f;
+  --jb-border-strong: #34343f;
+  --jb-border-faint:  #1c1c24;
+  --jb-border-w:      1px;
+
+  /* ── Text ── */
+  --jb-text-primary:   #dadae0;
+  --jb-text-secondary: #93939f;
+  --jb-text-dim:       #66666f;
+  --jb-text-disabled:  #46464d;
+
+  /* ── Accent (purple — selection, active, links) ── */
+  --jb-accent:        #7b55b8;
+  --jb-accent-hover:  #8f66cc;
+  --jb-accent-active: #6845a4;
+  --jb-accent-soft:   rgba(123, 85, 184, 0.11);
+  --jb-accent-border: rgba(123, 85, 184, 0.38);
+
+  /* ── Functional states ── */
+  --jb-ok:      #63ab86;
+  --jb-ok-soft: rgba(99, 171, 134, 0.12);
+  --jb-warn:    #c0a159;
+  --jb-error:   #c35b4b;
+  --jb-info:    #6894c0;
+
+  /* ── Note type colors ── */
+  --jb-paper:      #c47a45;
+  --jb-idea:       #5b7bd4;
+  --jb-experiment: #63ab86;
+  --jb-tangle:     #7b55b8;
+  --jb-daily:      #7a7a8a;
+
+  /* ── Geometry ── */
+  --jb-radius: 2px;
+  --jb-header-h: 32px;
+  --jb-status-h: 22px;
+  --jb-panel-hdr-h: 26px;
+  --jb-divider-w: 4px;
+
+  /* ── Shadow ── */
+  --jb-shadow-modal: 0 1px 0 rgba(0,0,0,0.3), 0 16px 32px rgba(0,0,0,0.5);
+  --jb-overlay:      rgba(6, 6, 9, 0.72);
+}
+
+/* ── Reset ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body, #root {
+  width: 100%; height: 100%;
+  overflow: hidden;
+  background: var(--jb-bg-app);
+  color: var(--jb-text-primary);
+  font-family: var(--jb-font-ui);
+  font-size: 13px;
+  line-height: 1.5;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  user-select: none;
+}
+
+button {
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+  color: inherit;
+}
+
+input, textarea, select {
+  font-family: var(--jb-font-mono);
+  font-size: 12px;
+  color: var(--jb-text-primary);
+  background: var(--jb-bg-inset);
+  border: var(--jb-border-w) solid var(--jb-border);
+  border-radius: var(--jb-radius);
+  outline: none;
+  user-select: text;
+}
+
+input:focus, textarea:focus {
+  border-color: var(--jb-accent-border);
+}
+
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--jb-border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--jb-text-dim); }
+
+/* ── App shell ── */
+.jb-app {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: 100%;
+  background: var(--jb-bg-app);
+}
+
+.jb-workspace {
+  flex: 1;
+  overflow: hidden;
+  position: relative;
+}

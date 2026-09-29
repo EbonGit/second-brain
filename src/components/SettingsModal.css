@@ -1,0 +1,197 @@
+.jb-settings-modal {
+  background: var(--jb-bg-panel);
+  border: 1px solid var(--jb-border-strong);
+  border-radius: 6px;
+  width: 480px;
+  max-width: 96vw;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.6);
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+}
+
+.jb-settings-hdr {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--jb-border);
+  flex-shrink: 0;
+}
+
+.jb-settings-title {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--jb-text-primary);
+  letter-spacing: 0.03em;
+}
+
+.jb-settings-close {
+  background: none;
+  border: none;
+  color: var(--jb-text-dim);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: var(--jb-radius);
+}
+.jb-settings-close:hover { color: var(--jb-text-primary); }
+
+.jb-settings-body {
+  padding: 18px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.jb-settings-section h3 {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--jb-accent);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin: 0 0 6px;
+}
+
+.jb-settings-hint {
+  font-size: 11px;
+  color: var(--jb-text-dim);
+  margin: 0 0 10px;
+  line-height: 1.5;
+}
+
+.jb-settings-label {
+  display: block;
+  font-size: 11px;
+  color: var(--jb-text-secondary);
+  margin-bottom: 4px;
+}
+
+.jb-settings-input {
+  width: 100%;
+  box-sizing: border-box;
+  background: var(--jb-bg-canvas);
+  border: 1px solid var(--jb-border-strong);
+  border-radius: var(--jb-radius);
+  color: var(--jb-text-primary);
+  font-family: var(--jb-font-mono);
+  font-size: 11px;
+  padding: 6px 10px;
+  outline: none;
+  transition: border-color 0.1s;
+}
+.jb-settings-input:focus { border-color: var(--jb-accent); }
+
+.jb-settings-label-hint {
+  font-size: 10px;
+  color: var(--jb-text-dim);
+  font-weight: 400;
+  margin-left: 4px;
+}
+
+.jb-settings-detect {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 6px 10px;
+  border-radius: var(--jb-radius);
+  font-size: 10px;
+  font-family: var(--jb-font-mono);
+  overflow: hidden;
+}
+
+.jb-settings-detect--ok {
+  background: rgba(99,171,134,0.08);
+  border: 1px solid rgba(99,171,134,0.25);
+}
+.jb-settings-detect--warn {
+  background: rgba(180,120,40,0.08);
+  border: 1px solid rgba(180,120,40,0.25);
+}
+
+.jb-settings-detect-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.jb-settings-detect--ok  .jb-settings-detect-dot { background: var(--jb-ok); }
+.jb-settings-detect--warn .jb-settings-detect-dot { background: var(--jb-warn); }
+
+.jb-settings-detect-path {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: var(--jb-text-secondary);
+}
+
+.jb-settings-mode-toggle {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 4px;
+}
+
+.jb-settings-mode-btn {
+  flex: 1;
+  padding: 6px 10px;
+  border-radius: var(--jb-radius);
+  font-size: 11px;
+  font-family: var(--jb-font-ui);
+  cursor: pointer;
+  border: 1px solid var(--jb-border-strong);
+  background: var(--jb-bg-canvas);
+  color: var(--jb-text-secondary);
+  transition: all 0.12s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+}
+.jb-settings-mode-btn:hover { color: var(--jb-text-primary); border-color: var(--jb-text-dim); }
+.jb-settings-mode-btn--active {
+  background: rgba(91,123,212,0.12);
+  border-color: var(--jb-accent);
+  color: var(--jb-accent);
+}
+
+.jb-settings-mode-tag {
+  font-size: 9px;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.jb-settings-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 12px 18px;
+  border-top: 1px solid var(--jb-border);
+  flex-shrink: 0;
+}
+
+.jb-settings-cancel {
+  font-size: 11px;
+  color: var(--jb-text-secondary);
+  background: none;
+  border: 1px solid var(--jb-border-strong);
+  border-radius: var(--jb-radius);
+  padding: 5px 14px;
+  cursor: pointer;
+}
+.jb-settings-cancel:hover { border-color: var(--jb-text-dim); color: var(--jb-text-primary); }
+
+.jb-settings-save {
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--jb-accent);
+  border: none;
+  border-radius: var(--jb-radius);
+  padding: 5px 16px;
+  cursor: pointer;
+  transition: background 0.1s;
+}
+.jb-settings-save:hover { background: var(--jb-accent-hover); }

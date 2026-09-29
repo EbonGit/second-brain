@@ -1,0 +1,48 @@
+.jb-statusbar {
+  display: flex;
+  align-items: center;
+  height: var(--jb-status-h);
+  min-height: var(--jb-status-h);
+  padding: 0 10px;
+  background: var(--jb-bg-panel-2);
+  border-top: var(--jb-border-w) solid var(--jb-border);
+  flex-shrink: 0;
+  gap: 8px;
+  font-size: 10px;
+  font-family: var(--jb-font-mono);
+  color: var(--jb-text-dim);
+}
+
+.jb-statusbar-left  { display: flex; align-items: center; gap: 8px; }
+.jb-statusbar-center { flex: 1; display: flex; align-items: center; justify-content: center; }
+.jb-statusbar-right { display: flex; align-items: center; gap: 8px; }
+
+.jb-status-chip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--jb-text-dim);
+}
+
+.jb-status-dot-sm {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+
+.jb-status-file {
+  color: var(--jb-text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.jb-status-stars {
+  color: var(--jb-warn);
+  letter-spacing: 1px;
+}
+
+.jb-status-vault {
+  color: var(--jb-text-dim);
+}

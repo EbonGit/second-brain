@@ -1,0 +1,16 @@
+# Normalize line endings: LF in repo, checkout as-is on each OS
+* text=auto eol=lf
+
+# Force binary files to never be touched
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.ico binary
+*.icns binary
+*.exe binary
+*.dll binary
+*.so binary
+*.dylib binary
+*.wasm binary
+*.db binary
+*.sqlite binary

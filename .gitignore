@@ -1,0 +1,35 @@
+# Ollama local model data (large binary blobs — never commit)
+ollama/
+
+# Dependencies & build outputs
+node_modules/
+dist/
+src-tauri/target/
+mcp-server/dist/
+mcp-server/node_modules/
+
+# Environment & secrets
+.env
+*.db
+
+# Vault — personal notes (keep only templates)
+vault/daily/
+vault/ideas/
+vault/notes/
+vault/papers/
+vault/experiments/
+vault/tangle/
+vault/insights.md
+
+# Generated / cached files
+.jb_embed_cache.json
+.jb_pdf_index.json
+.jb_summary.json
+.jb_settings.json
+
+# App data (written to LOCALAPPDATA at runtime, never in the repo)
+jads-brain/
+
+# Tauri
+src-tauri/gen/
+WixTools/

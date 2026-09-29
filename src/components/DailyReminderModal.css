@@ -1,0 +1,73 @@
+.jb-daily-reminder-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--jb-overlay);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.jb-daily-reminder {
+  background: var(--jb-bg-panel);
+  border: var(--jb-border-w) solid var(--jb-border-strong);
+  border-radius: var(--jb-radius);
+  box-shadow: var(--jb-shadow-modal);
+  padding: 28px 32px;
+  width: 380px;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.jb-daily-reminder-icon {
+  font-size: 28px;
+  color: var(--jb-accent);
+  margin-bottom: 4px;
+}
+
+.jb-daily-reminder-title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--jb-text-primary);
+}
+
+.jb-daily-reminder-sub {
+  font-size: 11px;
+  color: var(--jb-text-secondary);
+  line-height: 1.5;
+}
+
+.jb-daily-reminder-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.jb-daily-reminder-btn {
+  padding: 6px 18px;
+  border-radius: var(--jb-radius);
+  font-size: 11px;
+  font-family: var(--jb-font-mono);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.jb-daily-reminder-btn--open {
+  background: var(--jb-accent);
+  color: #fff;
+  border: 1px solid var(--jb-accent);
+}
+.jb-daily-reminder-btn--open:hover { filter: brightness(1.15); }
+
+.jb-daily-reminder-btn--skip {
+  background: transparent;
+  color: var(--jb-text-dim);
+  border: 1px solid var(--jb-border);
+}
+.jb-daily-reminder-btn--skip:hover {
+  background: var(--jb-bg-hover);
+  color: var(--jb-text-primary);
+}
