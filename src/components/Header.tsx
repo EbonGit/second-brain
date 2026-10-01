@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { invoke } from '@tauri-apps/api/core';
 import { useBrainStore } from '../store';
 import type { VaultEntry } from '../types';
 import './Header.css';
@@ -200,23 +201,10 @@ function OllamaStatus() {
   useEffect(() => {
     const check = async () => {
       try {
-        const res = await fetch('http://127.0.0.1:11434/api/version', {
-          signal: AbortSignal.timeout(2000),
-        });
-        if (res.ok) {
-          const data = await res.json() as { version?: string };
-          setVersion(data.version ?? null);
-          setOnline(true);
-          // Fetch model list while we're at it
-          fetch('http://127.0.0.1:11434/api/tags', { signal: AbortSignal.timeout(3000) })
-            .then(r => r.json())
-            .then((d: { models?: { name: string }[] }) => {
-              setModels((d.models ?? []).map(m => m.name));
-            })
-            .catch(() => {});
-        } else {
-          setOnline(false);
-        }
+        const info = await invoke<{ available: boolean; has_model: boolean; version: string | null; models: string[] }>('get_ollama_info');
+        setOnline(info.available);
+        setVersion(info.version ?? null);
+        setModels(info.models ?? []);
       } catch {
         setOnline(false);
         setVersion(null);

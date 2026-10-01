@@ -56,8 +56,46 @@ fn note_mtime(path: &str) -> String {
 
 // ── Public API ────────────────────────────────────────────────────────────────
 
+/// Reqwest client that bypasses the Windows system proxy for loopback connections.
+/// Without this, WinHTTP proxy settings can block 127.0.0.1 in release builds.
+fn make_client() -> reqwest::Client {
+    reqwest::ClientBuilder::new()
+        .no_proxy()
+        .build()
+        .unwrap_or_else(|_| reqwest::Client::new())
+}
+
+/// Try to start the Ollama server if not already running.
+/// Looks for the binary in known Windows install locations, then falls back to PATH.
+pub fn try_start_ollama() {
+    use std::process::{Command, Stdio};
+    let local = std::env::var("LOCALAPPDATA").unwrap_or_default();
+    let candidates = [
+        format!("{local}\\Programs\\Ollama\\ollama.exe"),
+        "C:\\Program Files\\Ollama\\ollama.exe".to_string(),
+        "ollama".to_string(),
+    ];
+    for path in &candidates {
+        if path.ends_with(".exe") && !std::path::Path::new(path).exists() {
+            continue;
+        }
+        let mut cmd = Command::new(path);
+        cmd.arg("serve")
+           .stdout(Stdio::null())
+           .stderr(Stdio::null())
+           .stdin(Stdio::null());
+        #[cfg(windows)]
+        { use std::os::windows::process::CommandExt; cmd.creation_flags(0x08000000); }
+        if cmd.spawn().is_ok() {
+            eprintln!("[ollama] démarré depuis: {path}");
+            return;
+        }
+    }
+    eprintln!("[ollama] introuvable — installe Ollama depuis https://ollama.com");
+}
+
 pub async fn is_available() -> bool {
-    reqwest::Client::new()
+    make_client()
         .get(format!("{BASE}/api/version"))
         .timeout(std::time::Duration::from_secs(2))
         .send().await
@@ -66,7 +104,7 @@ pub async fn is_available() -> bool {
 }
 
 pub async fn has_embed_model() -> bool {
-    let Ok(resp) = reqwest::Client::new()
+    let Ok(resp) = make_client()
         .get(format!("{BASE}/api/tags"))
         .timeout(std::time::Duration::from_secs(3))
         .send().await
@@ -75,6 +113,37 @@ pub async fn has_embed_model() -> bool {
     resp.json::<TagsResp>().await
         .map(|t| t.models.iter().any(|m| m.name.starts_with("nomic-embed-text")))
         .unwrap_or(false)
+}
+
+/// Full status check: availability + version + model list.
+/// Used by the Tauri command so the frontend never calls Ollama directly
+/// (direct fetch from tauri://localhost is blocked by WebView2 cross-origin rules).
+pub async fn get_status() -> (bool, Option<String>, Vec<String>) {
+    let client = make_client();
+    let Ok(r) = client
+        .get(format!("{BASE}/api/version"))
+        .timeout(std::time::Duration::from_secs(2))
+        .send().await
+    else { return (false, None, vec![]); };
+
+    if !r.status().is_success() { return (false, None, vec![]); }
+
+    let version = r.json::<serde_json::Value>().await
+        .ok()
+        .and_then(|v| v["version"].as_str().map(str::to_string));
+
+    let models = match client
+        .get(format!("{BASE}/api/tags"))
+        .timeout(std::time::Duration::from_secs(3))
+        .send().await
+    {
+        Ok(r) => r.json::<TagsResp>().await
+            .map(|t| t.models.into_iter().map(|m| m.name).collect())
+            .unwrap_or_default(),
+        Err(_) => vec![],
+    };
+
+    (true, version, models)
 }
 
 async fn embed_one(client: &reqwest::Client, text: &str) -> anyhow::Result<Vec<f32>> {
@@ -133,7 +202,7 @@ pub async fn compute_similarities(
 ) -> Vec<(String, String, f32)> {
     if notes.len() < 2 { return vec![]; }
 
-    let client = reqwest::Client::new();
+    let client = make_client();
     let mut cache = load_cache(vault_path);
     let mut dirty = false;
 
@@ -279,7 +348,7 @@ pub async fn semantic_search(
     query: &str,
     notes: &[NoteMeta],
 ) -> anyhow::Result<Vec<(String, String, f32)>> {
-    let client = reqwest::Client::new();
+    let client = make_client();
     let query_emb = embed_one(&client, query).await?;
     let cache = load_cache(vault_path);
 
@@ -300,7 +369,7 @@ pub async fn semantic_search(
 /// Ask the available Ollama text model to suggest tags for a note.
 /// Returns empty vec if no text model is installed.
 pub async fn suggest_tags(note_title: &str, note_body: &str) -> Vec<String> {
-    let client = reqwest::Client::new();
+    let client = make_client();
     let Some(model) = find_text_model(&client).await else { return vec![] };
 
     let content = if note_body.len() > 1_500 { &note_body[..1_500] } else { note_body };

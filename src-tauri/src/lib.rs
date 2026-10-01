@@ -131,8 +131,24 @@ async fn init_vault(app: tauri::AppHandle, state: tauri::State<'_, AppState>) ->
     let default_path = if cfg!(debug_assertions) {
         std::path::PathBuf::from(DEV_VAULT)
     } else {
-        app.path().app_data_dir().map_err(|e| e.to_string())?.join("vault")
+        // In prod: prefer the sibling vault/ next to the exe (portable install),
+        // then fall back to AppData.
+        let exe_dir = std::env::current_exe()
+            .ok()
+            .and_then(|p| p.parent().map(|d| d.to_path_buf()));
+        let portable = exe_dir.map(|d| d.join("vault"));
+        match portable.filter(|p| p.exists()) {
+            Some(p) => p,
+            None => app.path().app_data_dir().map_err(|e| e.to_string())?.join("vault"),
+        }
     };
+
+    // Ensure Ollama is running (non-blocking — spawns in background)
+    tokio::spawn(async {
+        if !ollama::is_available().await {
+            ollama::try_start_ollama();
+        }
+    });
 
     // 2. Check registry for an active vault override
     let mut reg = load_registry();
@@ -354,13 +370,18 @@ async fn get_graph_data(state: tauri::State<'_, AppState>) -> Result<GraphData, 
 }
 
 #[derive(serde::Serialize)]
-pub struct OllamaInfo { pub available: bool, pub has_model: bool }
+pub struct OllamaInfo {
+    pub available: bool,
+    pub has_model: bool,
+    pub version: Option<String>,
+    pub models: Vec<String>,
+}
 
 #[tauri::command]
 async fn get_ollama_info() -> OllamaInfo {
-    let available = ollama::is_available().await;
-    let has_model = if available { ollama::has_embed_model().await } else { false };
-    OllamaInfo { available, has_model }
+    let (available, version, models) = ollama::get_status().await;
+    let has_model = models.iter().any(|m| m.starts_with("nomic-embed-text"));
+    OllamaInfo { available, has_model, version, models }
 }
 
 #[tauri::command]
